@@ -94,7 +94,7 @@ proc mix*(
   let outputRaw: string = tempDir / "output.raw"
   
   let maxTimestamp: int32 = if sortedTimestamps.len > 0: sortedTimestamps[^1] else: 0'i32
-  let totalDurationMs: int32 = maxTimestamp + sfxDurationMs + 1000  # Add 1 second padding
+  let totalDurationMs: int32 = maxTimestamp + sfxDurationMs + 1000  # add 1 second padding
   let totalSamples: int = int(float(totalDurationMs) / 1000.0 * float(sampleRate))
   let totalBytes: int = totalSamples * bytesPerFrame
   
@@ -106,7 +106,6 @@ proc mix*(
   for ts in sortedTimestamps:
     let startSample: int = int(float(ts) / 1000.0 * float(sampleRate))
     let startByte: int = startSample * bytesPerFrame
-    # let endByte: int = min(startByte + sfxBytesInt, totalBytes)
     
     if startByte < totalBytes:
       let copyLen: int = min(sfxBytesInt, totalBytes - startByte)
@@ -132,9 +131,6 @@ proc mix*(
     removeDir(tempDir)
   except:
     discard
-  
-  # let endTime: Time = getTime()
-  # let elapsedSeconds: float = (endTime - startTime).inMilliseconds.float / 1000.0
   
   finishTask(true)
   
