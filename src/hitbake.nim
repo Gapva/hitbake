@@ -3,6 +3,9 @@ import std/[strformat, strutils, os, osproc, algorithm, math, times, paths]
 import "parsers"/soundspace
 import "components"/common
 
+var timeNow: float64 = cpuTime()
+var totalTime: float64
+
 const supportedTargets: seq[string] = @[
   "soundspace",
   "novastra"
@@ -26,23 +29,24 @@ proc printTask(task: string, first: bool = false): void =
 
 proc finishTask(final: bool = false): void =
   let tail: string = if final: "\n\n" else: "\n"
-  stdout.write(&"{FgBlue}done{FgWhite}{tail}")
+  let duration: float = cpuTime() - timeNow
+  stdout.write(&"{FgBlue}done{FgWhite} ({duration:.2f}s){tail}")
   stdout.flushFile()
+  totalTime += duration
+  timeNow = cpuTime()
 
 proc mix*(
   sfxFile: string,
   outputPath: string,
   timestamps: seq[int32]
 ): void =
-  # let startTime: Time = getTime()
-  
   printTask("preparing parser", true)
   
   var sortedTimestamps: seq[int32] = timestamps
   sortedTimestamps.sort()
   
   finishTask()
-  
+
   printTask("creating input file list")
   
   let (sfxDurationOutput, sfxDurationCode) = execCmdEx(
@@ -138,7 +142,7 @@ proc mix*(
     echo(sty"<red>error</red>: failed to encode output:", &"\n{encodeOutput}")
     quit(1)
   else:
-    echo(sty"<green>success</green>: finished baking hitsounds")
+    echo(sty"<green>success</green>: finished baking hitsounds in ", &"{totalTime:.2f}s")
 
 proc main(
   targetFormat: string,
