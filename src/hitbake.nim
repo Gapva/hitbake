@@ -144,7 +144,9 @@ proc main(
   targetFormat: string,
   dataPath: string,
   hitSoundFilePath: string = "hitsound.wav",
-  outputNameNoExt: string = "hitsounds"
+  outputNameNoExt: string = "hitsounds",
+  rate: float32 = 1.0,
+  latency: int32 = 0
 ): void =
   if targetFormat notin supportedTargets:
     echo(sty"<red>error</red>: invalid format: ", targetFormat)
@@ -162,7 +164,7 @@ proc main(
   
   var msecSeq: seq[int32]
   for note in myMap.noteMarkers:
-    msecSeq.add(note.msec)
+    msecSeq.add(((note.msec.float32) * (1.0 / rate)).int32 + abs(latency))
   let ext: string = if hitSoundFilePath.contains("."): hitSoundFilePath.split('.')[^1] else: "wav"
   let outputNameExt: string = &"{outputNameNoExt}.{ext}"
   
@@ -181,7 +183,9 @@ when isMainModule:
     "targetFormat": targetHelpText,
     "dataPath": "path to the chart data file",
     "hitSoundFilePath": "path to the hit-sound audio file (any format)",
-    "outputNameNoExt": "the name of the output mix without any file extension"
+    "outputNameNoExt": "the name of the output mix without any file extension",
+    "rate": "the playback rate of the output as a decimal percentage (1.0 = 100%)",
+    "latency": "how many extra milliseconds of silence will be present in the output"
   }, short={
     "hitSoundFilePath": 's'
   })
