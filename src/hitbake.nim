@@ -157,7 +157,7 @@ proc main(
   echo(resolvedHitSoundFilePath)
 
   case targetFormat:
-  of "sspm":
+  of "soundspace":
     myMap = newSsChart(resolvedDataPath)
   
   var msecSeq: seq[int32]
