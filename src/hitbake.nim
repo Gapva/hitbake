@@ -35,6 +35,13 @@ proc finishTask(final: bool = false): void =
   totalTime += duration
   timeNow = cpuTime()
 
+proc throw(errorText: string): void =
+  echo(&"{FgRed}error{FgWhite}: {errorText}")
+  quit(1)
+
+proc success(successText: string): void =
+  echo(&"{FgGreen}success{FgWhite}: {successText}")
+
 proc mix*(
   sfxFile: string,
   outputPath: string,
@@ -54,8 +61,7 @@ proc mix*(
   )
   
   if sfxDurationCode != 0:
-    echo(sty"<red>error</red>: failed to get SFX duration")
-    quit(1)
+    throw("failed to get SFX duration")
   
   let sfxDurationSec: float = parseFloat(sfxDurationOutput.strip())
   let sfxDurationMs: int32 = int32(sfxDurationSec * 1000)
@@ -68,16 +74,14 @@ proc mix*(
   let (extractOutput {.used.}, extractCode) = execCmdEx(extractCmd, options = {poUsePath})
   
   if extractCode != 0:
-    echo(sty"<red>error</red>: failed to extract SFX as raw PCM")
-    quit(1)
+    throw("failed to extract SFX as raw PCM")
   
   let (audioInfoOutput, audioInfoCode) = execCmdEx(
     &"""ffprobe -v error -show_entries stream=channels,sample_rate -of default=noprint_wrappers=1:nokey=1 "{sfxFile}" """
   )
   
   if audioInfoCode != 0:
-    echo(sty"<red>error</red>: failed to get audio info")
-    quit(1)
+    throw("failed to get audio info")
   
   let audioInfo: seq[string] = audioInfoOutput.strip().split("\n")
   let sampleRate: int = parseInt(audioInfo[0])
@@ -135,10 +139,9 @@ proc mix*(
   finishTask(true)
   
   if encodeCode != 0:
-    echo(sty"<red>error</red>: failed to encode output:", &"\n{encodeOutput}")
-    quit(1)
+    throw(&"failed to encode output:\n{encodeOutput}")
   else:
-    echo(sty"<green>success</green>: finished baking hitsounds in ", &"{totalTime:.2f}s")
+    success(&"finished baking hitsounds in {totalTime:.2f}s")
 
 proc main(
   targetFormat: string,
