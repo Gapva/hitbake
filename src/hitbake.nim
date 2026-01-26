@@ -174,6 +174,10 @@ proc main(
   mix(resolvedHitSoundFilePath, outputNameExt, msecSeq)
 
 when isMainModule:
+  let ffmpegPath: string = findExe("ffmpeg")
+  if ffmpegPath.isEmptyOrWhitespace():
+    throw("ffmpeg is not installed. please install it and re-run the command")
+
   const splitChar: string = "\n"
   const targetHelpText = block:
     var formattedTargets: seq[string]
