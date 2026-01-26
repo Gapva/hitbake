@@ -24,12 +24,26 @@ leading to a considerable performance gain. more info can be found below
 
 ### pre-chart runtime baking (hitbake method)
 | pros | cons |
-| ---- | ---- |
+| - | - |
 | extremely performant since it is pre-rendered | slightly longer load times (can be cached, however, to to speed things up even more |
 | sounds are guaranteed to remain in perfect sync even while other performance suffers | can use lots of disk space if cached |
 
-# are there any dependencies?
-yes; you simply need [ffmpeg](https://ffmpeg.org/download.html) installed to run the program
+# which games are supported?
+so far,
+
+| name | identifier | format | implementation status |
+| - | - | - | - |
+| Raw Data | `raw` | `.csv` | not started |
+| Sound Space | `soundspace` | `.txt` | full |
+| Novastra | `novastra` | `.nch` (must be extracted from `.npk` first) | WIP |
+
+more information for each format will be provided in a later revision
+
+# how do i use hitbake?
+first, you need [ffmpeg](https://ffmpeg.org/download.html) installed to run hitbake.
+
+there are no pre-compiled binaries available yet, so you will need to compile from source.
+passing `--help` to hitbake should give you enough info on its usage.
 
 # how can i contribute?
 first, you'll need to clone this repository:
