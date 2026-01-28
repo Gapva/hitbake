@@ -3,7 +3,7 @@
 import std/[strformat, strutils]
 import "../components"/common
 
-proc newRawData*(csvFilePath: string): Chart =
+proc newRawData*(csvFilePath: string, delimiter: string = ","): Chart =
   var csvFile: File
   try:
     csvFile = open(csvFilePath, fmRead)
@@ -14,7 +14,7 @@ proc newRawData*(csvFilePath: string): Chart =
     
     let cleanedContent: string = fileContent.replace("\n", "")
     
-    let allParts: seq[string] = cleanedContent.split(",")
+    let allParts: seq[string] = cleanedContent.split(delimiter)
     
     if allParts.len <= 1:
       raise newException(ValueError, &"invalid format: no commas found in {csvFilePath}")

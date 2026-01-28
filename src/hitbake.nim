@@ -1,6 +1,6 @@
 import cligen, prettyterm
 import std/[strformat, strutils, os, osproc, algorithm, math, times, paths]
-import "parsers"/soundspace
+import "parsers"/[soundspace, rawdata]
 import "components"/common
 
 var timeNow: float64 = cpuTime()
@@ -146,6 +146,7 @@ proc mix*(
 proc main(
   targetFormat: string,
   dataPath: string,
+  rawDelimiter: string = ",",
   hitSoundFilePath: string = "hitsound.wav",
   outputNameNoExt: string = "hitsounds",
   rate: float32 = 1.0,
@@ -164,6 +165,8 @@ proc main(
   case targetFormat:
   of "soundspace":
     myMap = newSsChart(resolvedDataPath)
+  of "raw":
+    myMap = newRawData(resolvedDataPath, rawDelimiter)
   
   var msecSeq: seq[int32]
   for note in myMap.noteMarkers:
@@ -189,6 +192,7 @@ when isMainModule:
   dispatch(main, help={
     "targetFormat": targetHelpText,
     "dataPath": "path to the chart data file",
+    "rawDelimiter": "custom delimiter to split data by (only works if target format is raw)",
     "hitSoundFilePath": "path to the hit-sound audio file (any format)",
     "outputNameNoExt": "the name of the output mix without any file extension",
     "rate": "the playback rate of the output as a decimal percentage (1.0 = 100%)",
