@@ -18,17 +18,17 @@ proc newSsChart*(textDataFilePath: string): SsChart =
     if textDataFile == nil:
       raise newException(IOError, &"could not open raw map data at {textDataFilePath}")
     
-    let fileContent = textDataFile.readAll()
+    let fileContent: string = textDataFile.readAll()
     
-    let cleanedContent = fileContent.replace("\n", "")
+    let cleanedContent: string = fileContent.replace("\n", "")
     
-    let allParts = cleanedContent.split(",")
+    let allParts: seq[string] = cleanedContent.split(",")
     
     if allParts.len <= 1:
       raise newException(ValueError, &"invalid format: no commas found in {textDataFilePath}")
     
     let audioId: string = allParts[0]
-    let noteData = allParts[1..^1]
+    let noteData: seq[string] = allParts[1..^1]
     
     var noteSeq: seq[SsNote]
     for rawNote in noteData:
