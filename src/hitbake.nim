@@ -3,7 +3,7 @@ import std/[strformat, strutils, os, osproc, algorithm, math, times, paths]
 import "parsers"/[soundspace, rawdata]
 import "components"/common
 
-var timeNow: float64 = cpuTime()
+var timeNow: float64 = epochTime()
 var totalTime: float64
 
 const supportedTargets: seq[string] = @[
@@ -25,17 +25,17 @@ proc resolveUserPath(inputPath: string): string =
     result = normalizedStr
 
 proc printTask(task: string, first: bool = false): void =
+  timeNow = epochTime()
   var head: string = if first: "\n" else: ""
   stdout.write(&"{head}{task}... ")
   stdout.flushFile()
 
 proc finishTask(final: bool = false): void =
   let tail: string = if final: "\n\n" else: "\n"
-  let duration: float = cpuTime() - timeNow
+  let duration: float = epochTime() - timeNow
   stdout.write(&"{FgBlue}done{FgWhite} ({duration:.2f}s){tail}")
   stdout.flushFile()
   totalTime += duration
-  timeNow = cpuTime()
 
 proc throw(errorText: string): void =
   echo(&"{FgRed}error{FgWhite}: {errorText}")
@@ -133,13 +133,13 @@ proc mix*(
   let encodeCmd: string = &"""ffmpeg -f s16le -ar {sampleRate} -ac {channels} -i "{outputRaw}" -c:a libmp3lame -q:a 2 "{outputPath}" -y"""
   let (encodeOutput, encodeCode) = execCmdEx(encodeCmd, options = {poUsePath})
   
+  finishTask(true)
+  
   try:
     removeDir(tempDir)
   except:
     discard
-  
-  finishTask(true)
-  
+
   if encodeCode != 0:
     throw(&"failed to encode output:\n{encodeOutput}")
   else:
