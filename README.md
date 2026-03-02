@@ -33,7 +33,7 @@ so far,
 
 | name | identifier | format | implementation status |
 | - | - | - | - |
-| Raw Data | `raw` | `.csv` | not started |
+| Raw Data | `raw` | `.csv` | full |
 | Sound Space | `soundspace` | `.txt` | full |
 | Novastra | `novastra` | `.nch` (must be extracted from `.npk` first) | WIP |
 
@@ -43,7 +43,7 @@ more information for each format will be provided in a later revision
 first, you need [ffmpeg](https://ffmpeg.org/download.html) installed to run hitbake.
 
 there are no pre-compiled binaries available yet, so you will need to compile from source.
-passing `--help` to hitbake should give you enough info on its usage.
+for instructions on how to build, see the section below.
 
 # how can i contribute?
 first, you'll need to clone this repository:
