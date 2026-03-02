@@ -8,8 +8,9 @@ var totalTime: float64
 
 const supportedTargets: seq[string] = @[
   "soundspace",
-  "novastra",
-  "raw"
+  # "novastra",
+  "raw",
+  "raw-pathless"
 ]
 
 proc resolveUserPath(inputPath: string): string =
