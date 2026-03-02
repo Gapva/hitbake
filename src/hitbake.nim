@@ -8,7 +8,8 @@ var totalTime: float64
 
 const supportedTargets: seq[string] = @[
   "soundspace",
-  "novastra"
+  "novastra",
+  "raw"
 ]
 
 proc resolveUserPath(inputPath: string): string =
@@ -145,7 +146,7 @@ proc mix*(
 
 proc main(
   targetFormat: string,
-  dataPath: string,
+  data: string,
   rawDelimiter: string = ",",
   hitSoundFilePath: string = "hitsound.wav",
   outputNameNoExt: string = "hitsounds",
@@ -157,16 +158,20 @@ proc main(
     quit(1)
   
   var myMap: Chart
-  let resolvedDataPath: string = resolveUserPath(dataPath)
+  let resolvedDataPath: string = resolveUserPath(data)
   let resolvedHitSoundFilePath: string = resolveUserPath(hitSoundFilePath)
-  echo(resolvedDataPath)
-  echo(resolvedHitSoundFilePath)
 
   case targetFormat:
   of "soundspace":
     myMap = newSsChart(resolvedDataPath)
   of "raw":
     myMap = newRawData(resolvedDataPath, rawDelimiter)
+  of "raw-pathless":
+    var pathToPass: string = data
+    var rawFile: File = open(data, fmRead)
+    if rawFile != nil:
+      pathToPass = resolvedDataPath
+    myMap = newRawData(pathToPass, rawDelimiter)
   
   var msecSeq: seq[int32]
   for note in myMap.noteMarkers:
@@ -191,7 +196,7 @@ when isMainModule:
   
   dispatch(main, help={
     "targetFormat": targetHelpText,
-    "dataPath": "path to the chart data file",
+    "data": "usually, this is the path to the data file. if the target format is raw-pathless, this is the pure string data",
     "rawDelimiter": "custom delimiter to split data by (only works if target format is raw)",
     "hitSoundFilePath": "path to the hit-sound audio file (any format)",
     "outputNameNoExt": "the name of the output mix without any file extension",

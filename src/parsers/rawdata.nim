@@ -3,21 +3,24 @@
 import std/[strformat, strutils]
 import "../components"/common
 
-proc newRawData*(csvFilePath: string, delimiter: string = ","): Chart =
+proc newRawData*(csvData: string, delimiter: string = ","): Chart =
   var csvFile: File
+  var fileContent: string
+  
   try:
-    csvFile = open(csvFilePath, fmRead)
+    csvFile = open(csvData, fmRead)
     if csvFile == nil:
-      raise newException(IOError, &"could not open raw map data at {csvFilePath}")
-    
-    let fileContent: string = csvFile.readAll()
+      # treat as actual data
+      fileContent = csvData
+    else:
+      fileContent = csvFile.readAll()
     
     let cleanedContent: string = fileContent.replace("\n", "")
     
     let allParts: seq[string] = cleanedContent.split(delimiter)
     
     if allParts.len <= 1:
-      raise newException(ValueError, &"invalid format: no commas found in {csvFilePath}")
+      raise newException(ValueError, &"invalid format: no commas found in {csvData}")
     
     var noteSeq: seq[NoteMarker]
     for part in allParts:

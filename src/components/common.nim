@@ -5,3 +5,4 @@ type
   
   Chart* = ref object of RootObj
     noteMarkers*: seq[NoteMarker]
+    
