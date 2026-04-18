@@ -1,14 +1,12 @@
 import cligen, prettyterm
 import std/[strformat, strutils, os, osproc, algorithm, math, times, paths]
-import "parsers"/[soundspace, rawdata]
-import "components"/common
+import parsers/rawdata
+import components/common
 
 var timeNow: float64 = epochTime()
 var totalTime: float64
 
 const supportedTargets: seq[string] = @[
-  "soundspace",
-  # "novastra",
   "raw",
   "raw-pathless"
 ]
@@ -163,8 +161,6 @@ proc main(
   let resolvedHitSoundFilePath: string = resolveUserPath(hitSoundFilePath)
 
   case targetFormat:
-  of "soundspace":
-    myMap = newSsChart(resolvedDataPath)
   of "raw":
     myMap = newRawData(resolvedDataPath, rawDelimiter)
   of "raw-pathless":
@@ -192,7 +188,7 @@ when isMainModule:
     var formattedTargets: seq[string]
     for rawTarget in supportedTargets:
       formattedTargets.add("\t- " & rawTarget)
-    "the name of the target game.\nsupported targets are:\n" &
+    "the parsing method to use.\nsupported targets are:\n" &
     formattedTargets.join(splitChar)
   
   dispatch(main, help={
