@@ -1,8 +1,10 @@
 # what is this?
+
 hitbake is a lightning-fast, easy-to-use utility for baking rhythm game hit-sounds.
 it allows you to render hit-sounds to an audio file
 
 # who is this for?
+
 this is primarily for rhythm game developers who want to ensure that hit-sounds in their game are always synced properly;
 e.g. in games like Spin Rhythm, ADoFaI, Etterna, Beat Saber, etc. where hit-sounds always play on time regardless of when/if the note was hit
 
@@ -10,6 +12,7 @@ while other games like osu!, Sound Space, etc. only play hit-sounds when the pla
 as they believe hit-sounds should serve as a guide, not a response to user input. hitbake's goal is to appeal to the latter idea
 
 # why would you use this?
+
 to understand why hitbake is useful, we need to first recognize that all current "hit-sound baking" methods are performed at run-time,
 and this is done by playing each sound individually for every note
 
@@ -31,21 +34,31 @@ leading to a considerable performance gain. more info can be found below
 more information for each format will be provided in a later revision
 
 # how do i use hitbake?
-first, you need [ffmpeg](https://ffmpeg.org/download.html) installed to run hitbake.
 
-there are no pre-compiled binaries available yet, so you will need to compile from source.
-for instructions on how to build, see the section below.
+you must have:
+- the [nim programming language](https://nim-lang.org/)
+- `nimble`, the nim package manager (it should come with the language during a full install)
+- [ffmpeg](https://ffmpeg.org/download.html) installed on your system and accessible in `PATH`
+
+as a cli tool:
+```
+nimble install https://github.com/Gapva/hitbake
+```
+
+as a library** (add to your `.nimble` file):
+```
+requires "hitbake >= 0.1.0 from https://github.com/Gapva/hitbake"
+```
+then import with `import hitbake`
 
 # how can i contribute?
+
 first, you'll need to clone this repository:
 ```
 git clone https://github.com/Gapva/hitbake.git && cd hitbake
 ```
 
-then, ensure that you have the [nim programming language](https://nim-lang.org/) installed.
-you'll also need `nimble`, the nim package manager
-
-install the following dependencies:
+install dependencies:
 ```
 nimble install cligen prettyterm
 ```

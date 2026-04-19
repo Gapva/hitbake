@@ -42,7 +42,7 @@ proc throw(errorText: string): void =
 proc success(successText: string): void =
   echo(&"{FgGreen}success{FgWhite}: {successText}")
 
-proc mix*(
+proc mix(
   sfxFile: string,
   outputPath: string,
   timestamps: seq[int32]
@@ -143,7 +143,7 @@ proc mix*(
   else:
     success(&"finished baking hitsounds in {totalTime:.2f}s")
 
-proc bake(
+proc bake*(
   targetFormat: string,
   data: string,
   rawDelimiter: string = ",",
