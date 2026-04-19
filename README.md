@@ -40,12 +40,12 @@ you must have:
 - `nimble`, the nim package manager (it should come with the language during a full install)
 - [ffmpeg](https://ffmpeg.org/download.html) installed on your system and accessible in `PATH`
 
-as a cli tool:
+install as a cli tool:
 ```
 nimble install https://github.com/Gapva/hitbake
 ```
 
-as a library** (add to your `.nimble` file):
+or install as a library (add to your `.nimble` file):
 ```
 requires "hitbake >= 0.1.0 from https://github.com/Gapva/hitbake"
 ```
