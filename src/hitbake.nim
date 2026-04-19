@@ -143,7 +143,7 @@ proc mix*(
   else:
     success(&"finished baking hitsounds in {totalTime:.2f}s")
 
-proc main(
+proc bake(
   targetFormat: string,
   data: string,
   rawDelimiter: string = ",",
@@ -191,7 +191,7 @@ when isMainModule:
     "the parsing method to use.\nsupported targets are:\n" &
     formattedTargets.join(splitChar)
   
-  dispatch(main, help={
+  dispatch(bake, help={
     "targetFormat": targetHelpText,
     "data": "usually, this is the path to the data file. if the target format is raw-pathless, this is the pure string data",
     "rawDelimiter": "custom delimiter to split data by (only works if target format is raw)",
