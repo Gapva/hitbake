@@ -31,8 +31,6 @@ leading to a considerable performance gain. more info can be found below
 | extremely performant since it is pre-rendered | slightly longer load times (can be cached, however, to to speed things up even more |
 | sounds are guaranteed to remain in perfect sync even while other performance suffers | can use lots of disk space if cached |
 
-more information for each format will be provided in a later revision
-
 # how do i use hitbake?
 
 you must have:
