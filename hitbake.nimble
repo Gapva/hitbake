@@ -1,5 +1,4 @@
-# Package
-
+# package
 version       = "0.1.0"
 author        = "Laith Hijazi"
 description   = "lightning-fast utility for baking rhythm game hit-sounds"
@@ -8,7 +7,7 @@ srcDir        = "src"
 installExt    = @["nim"]
 bin           = @["hitbake"]
 
-
-# Dependencies
-
+# dependencies
 requires "nim >= 2.2.4"
+requires "cligen >= 1.0.0"
+requires "prettyterm >= 0.1.0"
